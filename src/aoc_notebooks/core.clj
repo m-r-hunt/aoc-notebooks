@@ -1,14 +1,14 @@
 (ns aoc-notebooks.core
-	 (:require [nextjournal.clerk]))
+  (:require [nextjournal.clerk]))
 
 ;; 123
 ;; More text
 (defn main-
   "I don't do a whole lot."
   []
-  (nextjournal.clerk/build! {:paths ["src/solutions/**"] :out-path "docs"})
+  (nextjournal.clerk/build! {:paths ["src/aoc_notebooks/solutions/**"] :out-path "docs"})
   (nextjournal.clerk/serve! {:browse true :watch-paths ["src"]}))
 
 (defn anc
-		[y]
-		(+ y 44))
+  [y]
+  (+ y 44))

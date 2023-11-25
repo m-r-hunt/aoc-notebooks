@@ -6,15 +6,18 @@
 ;; Designed to cover all the common cases with minimal effort/typing.
 ;; Some functions are intentionally loose and do not strictly parse input to allow them to cover many cases as hack jobs.
 ;;
-;; Most functions have 2 modes: 
+;; Most functions have 3 modes: 
 ;; * (helper year day) will load the file input/year/dday.txt and run the function on it
+;; * (helper year day testcase) will load the file input/year/dday_testcase.txt and run the function on it
 ;; * (helper string) will just run the function against a string
 ;;
 ;; `(read-input year day)` does the data loading, can be called directly if that's helpful.
 
 (defn read-input
-  [year day]
-  (slurp (str "input/" year "/d" day ".txt")))
+  ([year day]
+   (slurp (str "input/" year "/d" day ".txt")))
+  ([year day testcase]
+   (slurp (str "input/" year "/d" day "_" testcase ".txt"))))
 
 (read-input 2022 1)
 
@@ -25,7 +28,9 @@
   ([input]
    (str/split input #"\r?\n"))
   ([year day]
-   (split-lines (read-input year day))))
+   (split-lines (read-input year day)))
+  ([year day testcase]
+   (split-lines (read-input year day testcase))))
 
 (split-lines 2022 1)
 
@@ -46,7 +51,9 @@
      (map (fn [line] (into [] (map #(Integer/parseInt %) line))) input)
      (into [] input)))
   ([year day]
-   (numbers (read-input year day))))
+   (numbers (read-input year day)))
+  ([year day testcase]
+   (numbers (read-input year day testcase))))
 
 (numbers "1 2 3\n3,4,5")
 
@@ -56,7 +63,9 @@
   ([input]
    (str/split input #"\r?\n\r?\n"))
   ([year day]
-   (line-groups (read-input year day))))
+   (line-groups (read-input year day)))
+  ([year day testcase]
+   (line-groups (read-input year day testcase))))
 
 (line-groups 2022 1)
 
@@ -72,7 +81,9 @@
      (map (fn [line] (into [] (map (comp keyword str/lower-case) line))) input)
      (into [] input)))
   ([year day]
-   (tokens (read-input year day))))
+   (tokens (read-input year day)))
+  ([year day testcase]
+   (tokens (read-input year day testcase))))
 
 (tokens 2022 2)
 
@@ -90,7 +101,9 @@
           input)
      (into [] input)))
   ([year day]
-   (numbers-and-tokens (read-input year day))))
+   (numbers-and-tokens (read-input year day)))
+  ([year day testcase]
+   (numbers-and-tokens (read-input year day testcase))))
 
 (numbers-and-tokens 2022 7)
 
@@ -104,16 +117,18 @@
 (defn grid
   ([input]
    (let [data (as-> input input
-                 (split-lines input)
-                 (map-indexed (fn [y line] (map-indexed (fn [x c] [[x y] c]) line)) input)
-                 (apply concat input)
-                 (apply concat input)
-                 (apply hash-map input))
+                (split-lines input)
+                (map-indexed (fn [y line] (map-indexed (fn [x c] [[x y] c]) line)) input)
+                (apply concat input)
+                (apply concat input)
+                (apply hash-map input))
          height (inc (apply max (map (fn [[[_x y] _c]] y) data)))
          width (inc (apply max (map (fn [[[x _y] _c]] x) data)))]
      {:data data :height height :width width}))
   ([year day]
-   (grid (read-input year day))))
+   (grid (read-input year day)))
+  ([year day testcase]
+   (grid (read-input year day testcase))))
 
 (def test-grid (grid 2022 8))
 (get-in test-grid [:data [10 10]])
@@ -123,7 +138,7 @@
 ;; draw-grid formats a grid (i.e. one returned by `grid` or structured the same way) for display in a clerk notebook.
 ;; Optionally you may supply a character for non-existent cells, otherwise ¬ will be used.
 
-(defn draw-grid 
+(defn draw-grid
   ([{:keys [height width data]} c]
    (let [xs (range 0 width)
          ys (range 0 height)]
