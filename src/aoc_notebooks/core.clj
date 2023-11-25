@@ -8,7 +8,3 @@
   []
   (nextjournal.clerk/build! {:paths ["src/aoc_notebooks/solutions/**"] :out-path "docs"})
   (nextjournal.clerk/serve! {:browse true :watch-paths ["src"]}))
-
-(defn anc
-  [y]
-  (+ y 44))

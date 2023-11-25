@@ -36,9 +36,13 @@
 
 ;; `split-tokens` attempts to split a string into "tokens", seperated by whitespace or common punctuation characters.
 
+;; The dynamic variable `*token-re*` determines what splits a token. Rebind it if you need to use a different char set.
+
+(def ^:dynamic *token-re* #"[ \t,\/\\':;\"#~{}]+")
+
 (defn split-tokens
   [line]
-  (str/split line #"[ \t,\/\\':;\"#~{}]+"))
+  (str/split line *token-re*))
 
 ;; `numbers` tries to parse out all the numbers in a file. It returns a `vec` of line `vec`s of numbers.
 ;; It splits by tokens within each line.
