@@ -33,7 +33,7 @@
 
 (defn split-tokens
   [line]
-  (str/split line #"[ \t,/\\':;\"#~{}]+"))
+  (str/split line #"[ \t,\/\\':;\"#~{}]+"))
 
 ;; `numbers` tries to parse out all the numbers in a file. It returns a `vec` of line `vec`s of numbers.
 ;; It splits by tokens within each line.
@@ -109,8 +109,8 @@
                  (apply concat input)
                  (apply concat input)
                  (apply hash-map input))
-         height (inc (apply max (map (fn [[[x y] c]] y) data)))
-         width (inc (apply max (map (fn [[[x y] c]] x) data)))]
+         height (inc (apply max (map (fn [[[_x y] _c]] y) data)))
+         width (inc (apply max (map (fn [[[x _y] _c]] x) data)))]
      {:data data :height height :width width}))
   ([year day]
    (grid (read-input year day))))
