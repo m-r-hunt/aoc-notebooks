@@ -52,7 +52,7 @@
    (as-> input input
      (split-lines input)
      (map split-tokens input)
-     (map (fn [line] (into [] (map #(Integer/parseInt %) line))) input)
+     (map (fn [line] (into [] (map #(Long/parseLong %) line))) input)
      (into [] input)))
   ([year day]
    (numbers (read-input year day)))
@@ -99,7 +99,7 @@
      (split-lines input)
      (map split-tokens input)
      (map (fn [line] (into [] (map #(if (re-matches #"^[0-9].*" %)
-                                      (Integer/parseInt %)
+                                      (Long/parseLong %)
                                       (keyword (str/lower-case %)))
                                    line)))
           input)
