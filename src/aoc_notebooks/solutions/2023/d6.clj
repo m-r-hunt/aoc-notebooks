@@ -83,7 +83,7 @@
 ;; If we had taken the brute force approach for part 1 we might have run into some problems trying to run through every case.
 ;; However our maths applies just the same without any modification.
 
-;; We might worry about overflow or precision issues, but Clojure's automatic promotion takes boate of any possible overflow, and precision was Good Enough(tm).
+;; We might worry about overflow or precision issues, but Clojure's automatic promotion takes care of any possible overflow, and precision was Good Enough(tm).
 
 ;; A quick check of the example input shows we're working fine:
 
