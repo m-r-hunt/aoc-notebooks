@@ -78,3 +78,7 @@
                      all-ranges))
 
 (reduce min (map :start results))
+
+
+(tap> 27)
+(tap> 87)
