@@ -5,7 +5,15 @@
   (:require [aoc-notebooks.input :as input]
             [clojure.math :as math]))
 
-;; [Problem](https://adventofcode.com/2023/day/6)
+;; [Problem.](https://adventofcode.com/2023/day/6) Summary:
+
+;; > As part of signing up, you get a sheet of paper (your puzzle input) that lists the time allowed for each race and also the best distance ever recorded in that race. To guarantee you win the grand prize, you need to make sure you go farther in each race than the current record holder.
+
+;; > The organizer brings you over to the area where the boat races are held. The boats are much smaller than you expected - they're actually toy boats, each with a big button on top. Holding down the button charges the boat, and releasing the button allows the boat to move. Boats move faster if their button was held longer, but time spent holding the button counts against the total race time. You can only hold the button at the start of the race, and boats don't move until the button is released.
+
+;; > Your toy boat has a starting speed of zero millimeters per millisecond. For each whole millisecond you spend at the beginning of the race holding down the button, the boat's speed increases by one millimeter per millisecond.
+
+;; > Determine the number of ways you could beat the record in each race. What do you get if you multiply these numbers together?
 
 ;; ## Part 1
 
@@ -17,7 +25,7 @@
 
 ;; Let the length of the race in ms be $n$. Let the distance record to beat be $d$.
 
-;; If we charge our car for $k\,\mathrm{ms}$ then our car gets to travel for the remaining $(n - k)\,\mathrm{ms}$ at a speed of $k\,\mathrm{mm}/\mathrm{ms}$.
+;; If we charge our boat for $k\,\mathrm{ms}$ then our boat gets to travel for the remaining $(n - k)\,\mathrm{ms}$ at a speed of $k\,\mathrm{mm}/\mathrm{ms}$.
 ;; That gives the total distance at the end of the race as $k(n - k)\,\mathrm{mm}$.
 
 ;; This is a quadratic equation in $k$, with roots at $k = 0$ and $k = n$ and a maximum in the middle.
@@ -75,7 +83,7 @@
 ;; If we had taken the brute force approach for part 1 we might have run into some problems trying to run through every case.
 ;; However our maths applies just the same without any modification.
 
-;; We might worry about overflow or precision issues, but Clojure's automatic promotion takes care of any possible overflow, and precision was Good Enough(tm).
+;; We might worry about overflow or precision issues, but Clojure's automatic promotion takes boate of any possible overflow, and precision was Good Enough(tm).
 
 ;; A quick check of the example input shows we're working fine:
 
