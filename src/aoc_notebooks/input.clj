@@ -77,12 +77,14 @@
 
 ;; `tokens` (TODO: change name?) works similarly to `numbers` except it takes each token, lowercases it and turns it into a keyword
 
+(def ^:dynamic *token-fn* (comp keyword str/lower-case))
+
 (defn tokens
   ([input]
    (as-> input input
      (split-lines input)
      (map split-tokens input)
-     (map (fn [line] (into [] (map (comp keyword str/lower-case) line))) input)
+     (map (fn [line] (into [] (map *token-fn* line))) input)
      (into [] input)))
   ([year day]
    (tokens (read-input year day)))
@@ -100,7 +102,7 @@
      (map split-tokens input)
      (map (fn [line] (into [] (map #(if (re-matches #"^[0-9].*" %)
                                       (Long/parseLong %)
-                                      (keyword (str/lower-case %)))
+                                      (*token-fn* %))
                                    line)))
           input)
      (into [] input)))
