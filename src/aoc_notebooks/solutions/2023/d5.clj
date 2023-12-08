@@ -26,7 +26,7 @@
 
 (defn map-number
   [n ranges]
-  (if-let [{:keys [dest src size]} (first (filter (fn [{:keys [dest src size]}] (<= src n (+ src size -1))) ranges))]
+  (if-let [{:keys [dest src _size]} (first (filter (fn [{:keys [_dest src size]}] (<= src n (+ src size -1))) ranges))]
     (+ dest (- n src))
     n))
 
