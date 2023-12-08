@@ -2,7 +2,8 @@
 
 ^{:nextjournal.clerk/visibility {:code :hide}}
 (ns aoc-notebooks.solutions.2023.dz
-  (:require [aoc-notebooks.input :as input]))
+  (:require [aoc-notebooks.input :as input]
+            [aoc-notebooks.utils :as utils]))
 
 ;; [Problem](https://adventofcode.com/2023/day/z)
 

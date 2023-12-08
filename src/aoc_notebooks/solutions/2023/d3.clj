@@ -2,7 +2,8 @@
 
 ^{:nextjournal.clerk/visibility {:code :hide}}
 (ns aoc-notebooks.solutions.2023.d3
-  (:require [aoc-notebooks.input :as input]))
+  (:require [aoc-notebooks.input :as input]
+            [aoc-notebooks.utils :as utils]))
 
 ;; [Problem](https://adventofcode.com/2023/day/3)
 
@@ -14,12 +15,6 @@
 
 (input/draw-grid input)
 
-;; We'll need to pull out digits in a minute.
-
-(defn is-digit
-  [d]
-  (re-matches #"[0-9]" (str d)))
-
 ;; Firstly we'll grab all the numbers in the grid, along with a list of the coordinates they occupied.
 ;; This is a bit of a nasty piece of imperative double-looping, could definitely be  improved.
 
@@ -27,9 +22,9 @@
             (if (< y (:height input))
               (let [nums (loop [x 0 nums nums]
                            (if (< x (:width input))
-                             (if (is-digit (get-in input [:data [x y]]))
+                             (if (utils/digit? (get-in input [:data [x y]]))
                                (let [line-xs (range x (:width input))
-                                     valid-xs (take-while #(is-digit (get-in input [:data [% y]])) line-xs)
+                                     valid-xs (take-while #(utils/digit? (get-in input [:data [% y]])) line-xs)
                                      num (Integer/parseInt (apply str (map #(get-in input [:data [% y]]) valid-xs)))]
                                  (recur (inc (last valid-xs)) (conj nums {:value num :coords (mapv #(vector % y) valid-xs)})))
                                (recur (inc x) nums))

@@ -2,7 +2,8 @@
 
 ^{:nextjournal.clerk/visibility {:code :hide}}
 (ns aoc-notebooks.solutions.2023.d1
-  (:require [aoc-notebooks.input :as input]))
+  (:require [aoc-notebooks.input :as input]
+            [aoc-notebooks.utils :as utils]))
 
 ;; [Problem](https://adventofcode.com/2023/day/1)
 
@@ -12,22 +13,12 @@
 
 (def input (input/split-lines 2023 1))
 
-;; We'll need to pull out digit chars from the string, so create a little helper.
-
-(defn is-digit
-  [d]
-  (re-matches #"[0-9]" (str d)))
-
-(is-digit "1")
-(is-digit \1)
-(is-digit "a")
-(is-digit \a)
 
 ;; Calculating the calibration value for a line is then simply a case of pulling out first and last digits, and combining them appropriately.
 
 (defn calib-value
   [s]
-  (let [digits (filter is-digit s)
+  (let [digits (filter utils/digit? s)
         first (Integer/parseInt (str (first digits)))
         last (Integer/parseInt (str (last digits)))]
     (+ (* 10 first) last)))
