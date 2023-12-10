@@ -128,8 +128,8 @@
                 (apply concat input)
                 (apply concat input)
                 (apply hash-map input))
-         height (inc (apply max (map (fn [[[_x y] _c]] y) data)))
-         width (inc (apply max (map (fn [[[x _y] _c]] x) data)))]
+         height (inc (reduce max 0 (map (fn [[[_x y] _c]] y) data)))
+         width (inc (reduce max 0 (map (fn [[[x _y] _c]] x) data)))]
      {:data data :height height :width width}))
   ([year day]
    (grid (read-input year day)))
@@ -142,14 +142,16 @@
 (get-in test-grid [:data [10 11]])
 
 ;; draw-grid formats a grid (i.e. one returned by `grid` or structured the same way) for display in a clerk notebook.
-;; Optionally you may supply a character for non-existent cells, otherwise ¬ will be used.
+;; Supports keyword arguments for options:
+;; * `:default \¬` - character to use for unmapped parts of the grid for any non-rectangular grid
+;; * `:filter (fn [c d] d)` - filtering function to transform grid before display. Takes coordinate and existing grid value and returns value that should be displayed
 
 (defn draw-grid
-  ([{:keys [height width data]} c]
+  ([{:keys [height width data]} & {:keys [default filter]
+                                   :or {default \¬ filter (fn [_c d] d)}}]
    (let [xs (range 0 width)
-         ys (range 0 height)]
-     (clerk/html [:div.font-mono.whitespace-pre (apply str (flatten (map (fn [y] (conj (map (fn [x] (or (data [x y]) c)) xs) "\n")) ys)))])))
-  ([grid]
-   (draw-grid grid \¬)))
+         ys (range 0 height)
+         filtered (into {} (map (fn [[c d]] [c (filter c d)]) data))]
+     (clerk/html [:div.font-mono.whitespace-pre (apply str (flatten (map (fn [y] (conj (map (fn [x] (or (filtered [x y]) default)) xs) "\n")) ys)))]))))
 
 (draw-grid test-grid)
